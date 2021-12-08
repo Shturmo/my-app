@@ -4,7 +4,7 @@ import Counter from './counter'
 const CountersList = () => {
   const initialState = [
     { id: 0, value: 0, name: 'Ненужная вещь' },
-    { id: 1, value: 4, name: 'Ложка' },
+    { id: 1, value: 0, name: 'Ложка' },
     { id: 2, value: 0, name: 'Вилка' },
     { id: 3, value: 0, name: 'Тарелка' },
     { id: 4, value: 0, name: 'Набор минималиста' },
@@ -18,31 +18,43 @@ const CountersList = () => {
   }
 
   const handleReset = () => {
-    console.log('handleReset')
+    // console.log('handle reset')
     setCounters(initialState)
   }
 
-  const handleUpdate = () => {
-    const updatedState = [
-      { id: 0, value: 1, name: 'Ненужная вещь' },
-      { id: 1, value: 2, name: 'Ложка' },
-      { id: 2, value: 3, name: 'Вилка' },
-      { id: 3, value: 4, name: 'Тарелка' },
-      { id: 4, value: 0, name: 'Набор минималиста' },
-    ]
-    setCounters(updatedState)
+  const handleIncrement = (id) => {
+    const updatedCounterValues = counters.map((counter) => {
+      if (counter.id === id) {
+        counter.value += 1
+      }
+      return counter
+    })
+    setCounters(updatedCounterValues)
+  }
+
+  const handleDecrement = (id) => {
+    const updatedCounterValues = counters.map((counter) => {
+      if (counter.id === id && counter.value > 0) {
+        counter.value -= 1
+      }
+      return counter
+    })
+    setCounters(updatedCounterValues)
   }
 
   return (
     <>
       {counters.map((count) => (
-        <Counter key={count.id} onDelete={handleDelete} {...count} />
+        <Counter
+          key={count.id}
+          onDelete={handleDelete}
+          onIncrement={handleIncrement}
+          onDecrement={handleDecrement}
+          {...count}
+        />
       ))}
       <button className="btn btn-primary btb-sm m-2" onClick={handleReset}>
         Сброс
-      </button>
-      <button className="btn btn-primary btb-sm m-2" onClick={handleUpdate}>
-        Обновить состояние
       </button>
     </>
   )
